@@ -88,10 +88,6 @@ class JSHandle {
         src.width = calcSize(0);
 		src.height = calcSize(1);
         src.attachNetStream(_net);
-        #if flixel
-        FlxG.addChildBelowMouse(src);
-        FlxG.stage.addEventListener(Event.ENTER_FRAME, _frame);
-        #end
         _net.play(_URL);
         #if web
         @:privateAccess
@@ -109,9 +105,6 @@ class JSHandle {
 	 */
     private function _reload() {
 		_net.pause();
-        #if flixel
-		FlxG.removeChild(src);
-        #end
 		src = new Media();
 		src.x = 0;
 		src.y = 0;
@@ -119,9 +112,6 @@ class JSHandle {
 		src.attachNetStream(_net);
 		src.width = calcSize(0);
 		src.height = calcSize(1);
-        #if flixel
-		FlxG.addChildBelowMouse(src);
-        #end
 		_net.resume();
 	}
 
@@ -150,17 +140,11 @@ class JSHandle {
 		}
 	}
     /** Disposes the media context. **/
-    public function dispose() {
-        #if flixel
-		if (FlxG.game.contains(src)) {
-			FlxG.game.removeChild(src);
-		}
-        if (Lib.current.stage.hasEventListener(Event.ENTER_FRAME))
-			Lib.current.stage.removeEventListener(Event.ENTER_FRAME, _frame);
-
+    public function dispose() 
+    {
 		if (Lib.current.stage.hasEventListener(Event.RESIZE))
 			Lib.current.stage.removeEventListener(Event.RESIZE, resize);
-        #end 
+
 		if (src != null)
             src = null;
 			_net.dispose();
@@ -186,15 +170,6 @@ class JSHandle {
         return _net.speed = _rate;
     }
 
-    @:noCompletion private function _frame(e:Event) {
-        #if flixel
-        if(FlxG.sound.muted) {
-            volume = 0;
-        }
-        if(FlxG.sound.volume == _volume || FlxG.sound.muted) return;
-        volume = FlxG.sound.volume;
-        #end
-    }
     /** Manually calculate the size of the media container window. 
         @param Ind Int the stageWidth or StageHeight 0,1
     **/

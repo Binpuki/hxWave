@@ -41,9 +41,9 @@ class NativeHandle extends Bitmap {
 	public var videoWidth(get, never):Int;
     public var onReady:Void->Void = null;
 
-	public function new() {
+	public function new() 
+    {
         super(bitmapData, AUTO, true);
-        flixel.FlxG.addChildBelowMouse(this);
     }
 
     public function load(path:String, ?loop:Bool, ?pitch:Float = 1.0) {
